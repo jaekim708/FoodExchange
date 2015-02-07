@@ -16,6 +16,8 @@
   <script type="text/javascript" src=
   "http://www.parsecdn.com/js/parse-1.3.4.min.js">
 </script>
+<script type="text/javascript" 
+      src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDlnDdwcfEtmbEn_78jA1cMiR3vSaIFqbc&sensor=TRUE"></script>
 <script type="text/javascript">
 function redirect(id) {
       sessionStorage.setItem('index', id);
@@ -46,16 +48,16 @@ p {text-align:center;font-family:Cursive;font-size:18px;font-style:normal;font-w
       <p style="text-align:right;"><input type="submit" value="Selling food"></p>
     </form>
 
-		
-	<form action=""><p style="text-align:right;">
-	<input type="checkbox" id="dFree" onclick="getList()"> Dairy-Free<br>
-	<input type="checkbox" id="gFree" onclick="getList()"> Gluten-Free<br>
-	<input type="checkbox" id="pFree" onclick="getList()"> Peanut-Free
-	</form>
-	
-	<PRE id="test" style="WHITE-SPACE: pre">
-	<ul style="list-style: none;">
-	<li id="hosts"></PRE></li>
+    
+  <form action=""><p style="text-align:right;">
+  <input type="checkbox" id="dFree" onclick="getList()"> Dairy-Free<br>
+  <input type="checkbox" id="gFree" onclick="getList()"> Gluten-Free<br>
+  <input type="checkbox" id="pFree" onclick="getList()"> Peanut-Free
+  </form>
+  
+  <PRE id="test" style="WHITE-SPACE: pre">
+  <ul style="list-style: none;">
+  <li id="hosts"></PRE></li>
   </div>
   <script type = "text/javascript">
   function logout() {
@@ -65,126 +67,125 @@ p {text-align:center;font-family:Cursive;font-size:18px;font-style:normal;font-w
   }
   </script>
   <script type="text/javascript">
-  		Parse.initialize("TnvJePY5vT2oSuP3VgWsO8OTWwZO2rMX0ZdwvRIh", "moibVX5koKKKLKGvMmavEGVDkvZ3lVfWw9x23cIt");
-		getList();
-		function getList(){		
-			var numCols = 7;
-			var buttonStatus = getButtonStatus();
-			var dFree = buttonStatus[0];
-			var gFree = buttonStatus[1];
-			var pFree = buttonStatus[2];
-			var Hosts = Parse.Object.extend("Hosts");
-			var query = new Parse.Query(Hosts);
-			query.greaterThan("ServingsLeft", 0);
-			query.find({
-				success: function(results){
-					results.sort(compare);	
-        			document.getElementById("hosts").innerHTML = "";
-					var pTag = document.createElement('p');	
-					var body = document.getElementsByTagName('body')[0];
-					var tbl = document.createElement('table');
-					tbl.style.width = '100%';
-            	tbl.setAttribute("cellpadding","5");
-            	tbl.style.height = "130px";
-					tbl.setAttribute('border', '1');
-					var tbdy=document.createElement('tbody');
-					
-	            pTag.setAttribute("rowspan","2");
-	  				for(var i = 0; i < results.length; i++){
-	  					if((dFree && !results[i].get("IsDairyFree")) ||
-	  						(gFree && !results[i].get("IsGlutenFree")) ||
-	  						(pFree && !results[i].get("IsNutFree")))
-	  						continue;
-  						var endTime = {"__type":"Date","iso":results[i].get("EndTime")};
-						endTime = new Date(endTime.iso);
-						var curTime = new Date().getTime();
-						var timeString = " ";
-						if(endTime.getTime() < curTime) 
-							continue;
-						else {
-							var timeLeft = endTime.getTime() - curTime;
-							var daysLeft = timeLeft / 1000 / 60 / 60 / 24;
-							var hoursLeft = timeLeft / 1000 / 60 / 60 - Math.floor(daysLeft) * 24;
-							var minutesLeft = timeLeft / 1000 / 60 - Math.floor(daysLeft) * 24 * 60 - Math.floor(hoursLeft) * 60;
-							var secondsLeft = timeLeft / 1000 - Math.floor(daysLeft) * 24 * 60 * 60 - Math.floor(hoursLeft) * 60 * 60 - Math.floor(minutesLeft) * 60;
-							if(Math.floor(daysLeft) > 0) 
-								timeString += Math.floor(daysLeft) + " days ";
-							if(Math.floor(hoursLeft) > 0)
-								timeString += Math.floor(hoursLeft) + " hours ";
-							if(Math.floor(minutesLeft) > 0)
-								timeString += Math.floor(minutesLeft) + " minutes ";
-							if(Math.floor(secondsLeft) > 0)
-								timeString += Math.floor(secondsLeft) + " seconds";		
-						}
-	  					var tr1=document.createElement('tr');
-							var td1=document.createElement('td');
-	                  td1.setAttribute("width","100px");
-	                  td1.setAttribute("rowspan","2");
-	                  
-	                  	var imgTag = document.createElement("img");
-	                  	imgTag.setAttribute("width","100px");
-	                  	imgTag.setAttribute("height","100px");
-	                  	if(typeof results[i].get("HostPic") == 'undefined') 
-	                  		imgTag.src = "img/DefaultUserProf.png";
-								else 
-									imgTag.src = results[i].get("HostPic");
-	                  	imgTag.id = "avatar";
-	                  td1.appendChild(imgTag);
-	                  	var tdTextTag = document.createElement('td');
-	                  		 tdTextTag.setAttribute("height","30%");
-	                         tdTextTag.setAttribute("nowrap","1");
-	                         tdTextTag.setAttribute("valign", "center");
-	                         tdTextTag.setAttribute("style","font-weight: bold; font-size: 20px;");
-	                         tdTextTag.id = "text";
-	                         tdTextTag.innerHTML = results[i].get("HostName") + " is serving " + 
-	                         	results[i].get("FoodName") + " for $" + results[i].get("Price") + "!";
-	                  //td1.appendChild(tdTextTag);
-	               tr1.appendChild(td1);
-	               tr1.appendChild(tdTextTag);
-	               var tr2 = document.createElement('tr');
-	               	var tdTextTag2 = document.createElement('td');
-	               	tdTextTag2.setAttribute("valign", "top");
-	               	tdTextTag2.id = "text2"
-	               	tdTextTag2.innerHTML = results[i].get("ServingsLeft") + " servings left, " +
-	               		results[i].get("DistanceFromMe") + " miles away. " + results[i].get("NumStars") +
-	               		" stars. \n Closing in " +  timeString + ".";
-	               tr2.appendChild(tdTextTag2);
+      Parse.initialize("TnvJePY5vT2oSuP3VgWsO8OTWwZO2rMX0ZdwvRIh", "moibVX5koKKKLKGvMmavEGVDkvZ3lVfWw9x23cIt");
+    getList();
+    function getList(){   
+      var numCols = 7;
+      var buttonStatus = getButtonStatus();
+      var dFree = buttonStatus[0];
+      var gFree = buttonStatus[1];
+      var pFree = buttonStatus[2];
+      var Hosts = Parse.Object.extend("Hosts");
+      var query = new Parse.Query(Hosts);
+      query.greaterThan("ServingsLeft", 0);
+      query.find({
+        success: function(results){
+          results.sort(compare);  
+              document.getElementById("hosts").innerHTML = "";
+          var pTag = document.createElement('p'); 
+          var body = document.getElementsByTagName('body')[0];
+          var tbl = document.createElement('table');
+          tbl.style.width = '100%';
+              tbl.setAttribute("cellpadding","5");
+              tbl.style.height = "130px";
+          tbl.setAttribute('border', '1');
+          var tbdy=document.createElement('tbody');
+          
+              pTag.setAttribute("rowspan","2");
+            for(var i = 0; i < results.length; i++){
+              if((dFree && !results[i].get("IsDairyFree")) ||
+                (gFree && !results[i].get("IsGlutenFree")) ||
+                (pFree && !results[i].get("IsNutFree")))
+                continue;
+              var endTime = {"__type":"Date","iso":results[i].get("EndTime")};
+            endTime = new Date(endTime.iso);
+            var curTime = new Date().getTime();
+            var timeString = " ";
+            if(endTime.getTime() < curTime) 
+              continue;
+            else {
+              var timeLeft = endTime.getTime() - curTime;
+              var daysLeft = timeLeft / 1000 / 60 / 60 / 24;
+              var hoursLeft = timeLeft / 1000 / 60 / 60 - Math.floor(daysLeft) * 24;
+              var minutesLeft = timeLeft / 1000 / 60 - Math.floor(daysLeft) * 24 * 60 - Math.floor(hoursLeft) * 60;
+              var secondsLeft = timeLeft / 1000 - Math.floor(daysLeft) * 24 * 60 * 60 - Math.floor(hoursLeft) * 60 * 60 - Math.floor(minutesLeft) * 60;
+              if(Math.floor(daysLeft) > 0) 
+                timeString += Math.floor(daysLeft) + " days ";
+              if(Math.floor(hoursLeft) > 0)
+                timeString += Math.floor(hoursLeft) + " hours ";
+              if(Math.floor(minutesLeft) > 0)
+                timeString += Math.floor(minutesLeft) + " minutes ";
+              if(Math.floor(secondsLeft) > 0)
+                timeString += Math.floor(secondsLeft) + " seconds";   
+            }
+              var tr1=document.createElement('tr');
+              var td1=document.createElement('td');
+                    td1.setAttribute("width","100px");
+                    td1.setAttribute("rowspan","2");
+                    
+                      var imgTag = document.createElement("img");
+                      imgTag.setAttribute("width","100px");
+                      imgTag.setAttribute("height","100px");
+                      if(typeof results[i].get("HostPic") == 'undefined') 
+                        imgTag.src = "img/DefaultUserProf.png";
+                else 
+                  imgTag.src = results[i].get("HostPic");
+                      imgTag.id = "avatar";
+                    td1.appendChild(imgTag);
+                      var tdTextTag = document.createElement('td');
+                         tdTextTag.setAttribute("height","30%");
+                           tdTextTag.setAttribute("nowrap","1");
+                           tdTextTag.setAttribute("valign", "center");
+                           tdTextTag.setAttribute("style","font-weight: bold; font-size: 20px;");
+                           tdTextTag.id = "text";
+                           tdTextTag.innerHTML = results[i].get("HostName") + " is serving " + 
+                            results[i].get("FoodName") + " for $" + results[i].get("Price") + "!";
+                    //td1.appendChild(tdTextTag);
+                 tr1.appendChild(td1);
+                 tr1.appendChild(tdTextTag);
+                 var tr2 = document.createElement('tr');
+                  var tdTextTag2 = document.createElement('td');
+                  tdTextTag2.setAttribute("valign", "top");
+                  tdTextTag2.id = "text2"
+                  tdTextTag2.innerHTML = results[i].get("ServingsLeft") + " servings left, " +
+                    results[i].get("DistanceFromMe") + " miles away. " + results[i].get("NumStars") +
+                    " stars. \n Closing in " +  timeString + ".";
+                 tr2.appendChild(tdTextTag2);
                  var tr3 = document.createElement('input');
-	               	tr3.setAttribute("type", "button");
+                  tr3.setAttribute("type", "button");
                   tr3.setAttribute("name", "Buy " + i);
                   tr3.setAttribute("id", i);
                   tr3.setAttribute("value", "Buy");
                   tr3.setAttribute("onclick", "redirect(this.id)");
                   sessionStorage.setItem("results", results);
 
-						tbdy.appendChild(tr1);
-						tbdy.appendChild(tr2);
+            tbdy.appendChild(tr1);
+            tbdy.appendChild(tr2);
             tbdy.appendChild(tr3);
-	  				}	
-					tbl.appendChild(tbdy);
-					pTag.appendChild(tbl);
-					document.getElementById("hosts").appendChild(pTag);
-				},
-				error: function(error){
-  	  	 			document.write("ERROR: " + error.message);
-				}
-			});
-	  	}
-		function compare(a, b){
-			if(a.DistanceToMe < b.DistanceToMe)
-				return -1;
-			if(a.DistanceToMe > b.DistanceToMe)
-				return 1;
-			return 0;			
-		}
-		function getButtonStatus(){		
-			var dFree = document.getElementById("dFree").checked;
-			var gFree = document.getElementById("gFree").checked;
-			var pFree = document.getElementById("pFree").checked;
-			return[dFree, gFree, pFree];
-		}
+            } 
+          tbl.appendChild(tbdy);
+          pTag.appendChild(tbl);
+          document.getElementById("hosts").appendChild(pTag);
+        },
+        error: function(error){
+              document.write("ERROR: " + error.message);
+        }
+      });
+      }
+    function compare(a, b){
+      if(a.DistanceToMe < b.DistanceToMe)
+        return -1;
+      if(a.DistanceToMe > b.DistanceToMe)
+        return 1;
+      return 0;     
+    }
+    function getButtonStatus(){   
+      var dFree = document.getElementById("dFree").checked;
+      var gFree = document.getElementById("gFree").checked;
+      var pFree = document.getElementById("pFree").checked;
+      return[dFree, gFree, pFree];
+    }
     
  </script>
 </body>
 </html>
-
