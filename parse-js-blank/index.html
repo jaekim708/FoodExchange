@@ -44,25 +44,25 @@ p {text-align:center;font-family:Cursive;font-size:18px;font-style:normal;font-w
 	<form action=""><p style="text-align:right;">
 	<input type="checkbox" id="dFree" onclick="getList()"> Dairy-Free<br>
 	<input type="checkbox" id="gFree" onclick="getList()"> Gluten-Free<br>
-	<input type="checkbox" id="pFree" onclick="getList()"> Peanut-Free 
+	<input type="checkbox" id="pFree" onclick="getList()"> Peanut-Free
 	</form>
 	
-	<ol id="hosts"></ol>
+	<ul style="list-style: none;"><li id="hosts"></li>
 
   </div>
   <script type="text/javascript">
   		Parse.initialize("TnvJePY5vT2oSuP3VgWsO8OTWwZO2rMX0ZdwvRIh", "moibVX5koKKKLKGvMmavEGVDkvZ3lVfWw9x23cIt");
-		var dFree = document.getElementById("dFree").checked;
-		var gFree = document.getElementById("gFree").checked;
-		var pFree = document.getElementById("pFree").checked;
-		getList(dFree, gFree, pFree);
-		function getList(dFree, gFree, pFree){	
+		getList();
+		function getList(){		
+			[dFree, gFree, pFree] = getButtonStatus();
 			var Hosts = Parse.Object.extend("Hosts");
 			var query = new Parse.Query(Hosts);
 			query.find({
 				success: function(results){
-					results.sort(compare);		
 					var hosts =	document.getElementById('hosts');
+					while(hosts.hasChildNodes())
+						hosts.removeChild(hosts.childNodes[0]);
+					results.sort(compare);		
 	  				for(var i = 0; i < results.length; i++){
 	  					if((dFree && !results[i].get("IsDairyFree")) ||
 	  						(gFree && !results[i].get("IsGlutenFree")) ||
@@ -84,6 +84,12 @@ p {text-align:center;font-family:Cursive;font-size:18px;font-style:normal;font-w
 			if(a.DistanceToMe > b.DistanceToMe)
 				return 1;
 			return 0;			
+		}
+		function getButtonStatus(){		
+			var dFree = document.getElementById("dFree").checked;
+			var gFree = document.getElementById("gFree").checked;
+			var pFree = document.getElementById("pFree").checked;
+			return[dFree, gFree, pFree];
 		}
  </script>
 </body>
