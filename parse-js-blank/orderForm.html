@@ -15,8 +15,18 @@
 
 <body onclick()="check_cred()">
 <script type="text/javascript">
-function 
-var query 
+function displayForm() {
+  var table = document.createElement('table');
+  var results = session.getItem('results');
+  var i = session.getItem('index');
+  var item = results[i];
+  var name = item.get('FoodName');
+  var price = item.get('price');
+  var addr = item.get('Address');
+  var city = item.get('City');
+  var desc = item.ge
+  
+}
 </body>
 
 </html>
