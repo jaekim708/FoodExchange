@@ -33,33 +33,32 @@ div.c1 {display:none}
 		
   </div>
   <script type="text/javascript">
-	  	document.write("WORK");
-  		Parse.initialize("TnvJePY5vT2oSuP3VgWsO8OTWfwZO2rMX0ZdwvRIh", "moibVX5koKKKLKGvMmavEGVDkvZ3lVfWw9x23cIt");
-		PFQuery *query = [PFQuery queryWithClassName:@"Hosts"];
-  		[query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-  			if (!error) {
-				objects.sort(compare);		
+  		Parse.initialize("TnvJePY5vT2oSuP3VgWsO8OTWwZO2rMX0ZdwvRIh", "moibVX5koKKKLKGvMmavEGVDkvZ3lVfWw9x23cIt");
+		var Hosts = Parse.Object.extend("Hosts");
+		var query = new Parse.Query(Hosts);
+		document.write("ADSDASD");
+		query.find({
+			success: function(results){
+				results.sort(compare);		
 				var hosts =	document.getElementById('hosts');
-	  			document.write("WORK");
-	  			for(var i = 0; i < objects.length; i++){
+	  			for(var i = 0; i < results.length; i++){
 					var entry = document.createElement('li');
-					entry.appendChild(document.createTextNode(objects[i].HostName));
+					entry.appendChild(document.createTextNode(results[i].get("HostName")));
 					hosts.appendChild(entry);
 	  			}
+			},
+			error: function(error){
+  	  	 		document.write("ERROR: " + error.message);
+			}
+		});
 	  		
- 			} else {
-  	  		// Log details of the failure
-  	  	 		document.write("ERROR");
-  	  			NSLog(@"Error: %@ %@", error, [error userInfo]);
-			}
-			function compare(a, b){
-				if(a.DistanceToMe < b.DistanceToMe)
-					return -1;
-				if(a.DistanceToMe > b.DistanceToMe)
-					return 1;
-				return 0;			
-			}
-		}];
-  </script>
+		function compare(a, b){
+			if(a.DistanceToMe < b.DistanceToMe)
+				return -1;
+			if(a.DistanceToMe > b.DistanceToMe)
+				return 1;
+			return 0;			
+		}
+ </script>
 </body>
 </html>
