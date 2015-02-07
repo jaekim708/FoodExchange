@@ -31,20 +31,33 @@ function displayForm() {
 displayForm();
 </script>
 </p>
-<p><br>
-<input type='button' name='submit' id = 'submit_form' value = 'Confirm order'
-onclick='confirm_order()'><br>
+<p>
+<button name='submit' id = 'submit_form' onclick='confirm_order()'>Confirm order</button><br>
 </p>
 <script type='text/javascript'>
 function confirm_order() {
-  var test = window.confirm("Are you sure you want to order?");
-  if (r === true) {
-    alert("Successful order");
-    document.location.href='./order_confirmation';
-  } else {
-    alert("Order cancelled");
-    document.location.href='./index.html';
-  }
+	$.ajax({
+		//paying a bill
+		url: 'https://servicelink2eng.pnc.com/pnc/poc/p2p/payments?client_id=84276e67-6951-46fc-a34b-9c9002361339&customerKey=503238',
+		method: 'GET',
+		dataType: 'json',
+		/*data: {
+			//client_id: '123456',
+			//customerKey: '503238'
+		},*/
+		success: function (payment) {
+			console.log(payment); // Print results to the console
+			document.write("Amount to pay:   " + payment[0].amount + "<br>");
+			document.write("Account Number :    " + payment[0].payFromAccount + "<br>");
+			document.write("Send Date:   " + payment[0].sendData + "<br>");
+			document.write("Payment Status:   " + payment[0].status + "<br>");
+			document.write("<br>" + "<br>" + "<br>" );
+		},
+		error: function () {
+// Handle error
+		}
+	});
+}
 </script>
 </body>
 
