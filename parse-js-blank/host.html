@@ -37,13 +37,29 @@ function submit() {
   var currentUser = Parse.User.current();
   var Hosts = Parse.Object.extend("Hosts");
   var info = new Hosts();
-  info.set("item", document.getElementById('item').value);
+  var item = document.getElementById('item').value;
+  if (item === "") {
+    alert("Item field cannot be empty");
+    return false;
+  }
+  var price = document.getElementById('price').value;
+  if (price === null) {
+    price = 0;
+  }
+  var addr = document.getElementById('addr').value;
+  var city = document.getElementById('city').value;
+  var state = document.getElementById('state').value;
+  if (addr === "" || city === "" || state.length !== 2) {
+    alert("The address fields cannot be empty");
+    return false;
+  }
+  info.set("item", item);
   info.set("desc", document.getElementById('desc').value);
   info.set("pic", document.getElementById('pic').value);
-  info.set("price", document.getElementById('price').value);
-  info.set("addr", document.getElementById('addr').value);
-  info.set("city", document.getElementById('city').value);
-  info.set("state", document.getElementById('state').value);
+  info.set("price", price);
+  info.set("addr", addr);
+  info.set("city", city);
+  info.set("state", state);
   info.set("isDairyFree", document.getElementById('isDairyFree').value);
   info.set("isNutFree", document.getElementById('isNutFree').value);
   info.set("isGlutenFree", document.getElementById('isGlutenFree').value);
