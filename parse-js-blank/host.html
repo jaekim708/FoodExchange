@@ -17,11 +17,38 @@
 
 Item: <input type="text" name="item" id="item"><br>
 Description: <input type="text" name="desc" id="desc"><br>
-Picture: <input type="file" name="pic" id="pic"><br>
+Picture: <input type="file" name="pic" id="pic" required=false><br>
 Price: <input type="number" name="price" id="price" step = "0.01" min = "0"><br>
+Servings: <input type="number" name="servings" id="servings" step = "1" min = "1"><br>
 Address: <input type="text" name="addr" id="addr"><br>
 City: <input type="text" name="city" id="city"><br>
 State: <input type="text" name="state" id="state" maxlength="2"><br>
+Start Time: 
+<TABLE BORDER="0" align="center">
+	<TR>
+	<TD><input type="number" name="StartHour" id="StartHour" maxlength="2" min="1"max="12"style="width: 40px;"></TD>
+	<TD><input type="number" name="StartMin" id="StartMin" maxlength="2" min="00" max"59" style="width: 40px;"></TD>
+	<TD><form>
+			<input type="radio" name="startAMPM" value="AM" checked>AM
+			<input type="radio" name="startAMPM" value="PM">PM
+  		</form> <br></TD>
+</TR>
+</TABLE>
+  		
+				
+End Time:
+<TABLE BORDER="0" align="center">
+	<TR>
+	<TD><input type="number" name="EndHour" id="EndHour" maxlength="2" min="1"max="12"style="width: 40px;"></TD>
+	<TD><input type="number" name="EndMin" id="EndMin" maxlength="2" min="00" max"59" style="width: 40px;"></TD>
+	<TD><form>
+			<input type="radio" name="endAMPM" value="AM" checked>AM
+			<input type="radio" name="endAMPM" value="PM">PM
+  		</form> <br></TD>
+</TR>
+</TABLE>
+  		
+				
 Check all that apply:<br>
 Dairy free: <input type="checkbox" name="isDairyFree" id="isDairyFree"><br>
 Nut free: <input type="checkbox" name="isNutFree" id="isNutFree"><br>
@@ -47,19 +74,34 @@ function submit() {
   var currentUser = Parse.User.current();
   var Hosts = Parse.Object.extend("Hosts");
   var info = new Hosts();
-  info.set("item", document.getElementById('item').value);
-  info.set("desc", document.getElementById('desc').value);
-  info.set("pic", document.getElementById('pic').value);
-  info.set("price", document.getElementById('price').value);
-  info.set("addr", document.getElementById('addr').value);
-  info.set("city", document.getElementById('city').value);
-  info.set("state", document.getElementById('state').value);
-  info.set("isDairyFree", document.getElementById('isDairyFree').value);
-  info.set("isNutFree", document.getElementById('isNutFree').value);
-  info.set("isGlutenFree", document.getElementById('isGlutenFree').value);
-  info.set("isKosher", document.getElementById('isKosher').value);
-  info.set("isVeg", document.getElementById('isVeg').value);
-  info.set("seller", currentUser);
+  var curTime = new Date();
+  var StartHour = document.getElementById("StartHour").value;
+  var StartMin = document.getElementById("StartMin").value;
+  var EndHour = document.getElementById("EndHour").value;
+  var EndMin = document.getElementById("EndMin").value;
+  if(document.getElementsByName("startAMPM").value == "PM")
+  		StartHour += 12;
+  if(document.getElementsByName("endAMPM").value  == "PM")
+  		EndHour += 12;
+  info.set("FoodName", document.getElementById('item').value);
+  info.set("Desc", document.getElementById('desc').value);
+  info.set("FoodPic", Number(document.getElementById('pic')));
+  info.set("Price", Number(document.getElementById('price').value));
+  info.set("Address", document.getElementById('addr').value);
+  info.set("City", document.getElementById('city').value);
+  info.set("State", document.getElementById('state').value);
+  info.set("StartTime", new Date(curTime.getYear(), curTime.getMonth(), curTime.getDay(),
+  			  StartHour, StartMin));
+  
+  info.set("EndTime", new Date(curTime.getYear(), curTime.getMonth(), curTime.getDay(),
+  			  EndHour, EndMin));
+  info.set("ServingsLeft", Number(document.getElementById('servings').value));
+  info.set("IsDairyFree", Boolean(document.getElementById('isDairyFree').checked));
+  info.set("IsNutFree", Boolean(document.getElementById('isNutFree').checked));
+  info.set("IsGlutenFree", Boolean(document.getElementById('isGlutenFree').checked));
+  info.set("IsKosher", Boolean(document.getElementById('isKosher').checked));
+  info.set("IsVeg", Boolean(document.getElementById('isVeg').checked));
+  info.set("HostName", currentUser.getUsername());
   info.save(null, {
     success: function(info) {
       alert("Successful submission");
