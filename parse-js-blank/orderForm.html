@@ -68,8 +68,11 @@ $.ajax({
 			//customerKey: '503238'
 		},*/
 		success: function (payment) {
+      var results = JSON.parse(sessionStorage.results);
+      var i = JSON.parse(sessionStorage.index);
+      var item = results[i];
 			console.log(payment); // Print results to the console
-			document.write("Amount to pay:   " + payment[0].amount + "<br>");
+			document.write("Amount to pay:   $" + item.Price + "<br>");
 			document.write("Account Number :    " + payment[0].payFromAccount + "<br>");
 			document.write("Send Date:   " + payment[0].sendData + "<br>");
 			document.write("Payment Status:   " + payment[0].status + "<br>");
