@@ -17,12 +17,60 @@
 
 Item: <input type="text" name="item" id="item"><br>
 Description: <input type="text" name="desc" id="desc"><br>
-Picture: <input type="file" name="pic" id="pic" required=false><br>
+Picture: <input type="file" id="FoodPic"><br>
 Price: <input type="number" name="price" id="price" step = "0.01" min = "0"><br>
 Servings: <input type="number" name="servings" id="servings" step = "1" min = "1"><br>
 Address: <input type="text" name="addr" id="addr"><br>
 City: <input type="text" name="city" id="city"><br>
 State: <input type="text" name="state" id="state" maxlength="2"><br>
+Date: <select name="month" id="month" onchange="" size="1">
+    <option value="01">January</option>
+    <option value="02">February</option>
+    <option value="03">March</option>
+    <option value="04">April</option>
+    <option value="05">May</option>
+    <option value="06">June</option>
+    <option value="07">July</option>
+    <option value="08">August</option>
+    <option value="09">September</option>
+    <option value="10">October</option>
+    <option value="11">November</option>
+    <option value="12">December</option>
+</select>
+
+<select name="day" id="day" onchange="" size="1">
+    <option value="01">01</option>
+    <option value="02">02</option>
+    <option value="03">03</option>
+    <option value="04">04</option>
+    <option value="05">05</option>
+    <option value="06">06</option>
+    <option value="07">07</option>
+    <option value="08">08</option>
+    <option value="09">09</option>
+    <option value="10">10</option>
+    <option value="11">11</option>
+    <option value="12">12</option>
+    <option value="13">13</option>
+    <option value="14">14</option>
+    <option value="15">15</option>
+    <option value="16">16</option>
+    <option value="17">17</option>
+    <option value="18">18</option>
+    <option value="19">19</option>
+    <option value="20">20</option>
+    <option value="21">21</option>
+    <option value="22">22</option>
+    <option value="23">23</option>
+    <option value="24">24</option>
+    <option value="25">25</option>
+    <option value="26">26</option>
+    <option value="27">27</option>
+    <option value="28">28</option>
+    <option value="29">29</option>
+    <option value="30">30</option>
+    <option value="31">31</option>
+</select><br>
 Start Time: 
 <TABLE BORDER="0" align="center">
 	<TR>
@@ -57,17 +105,7 @@ Kosher: <input type="checkbox" name="isKosher" id="isKosher"><br>
 Vegetarian: <input type="checkbox" name="isVeg" id="isVeg"><br>
 <input type="button" onClick="submit()" value="Submit">
 
-<script type="text/javascript">
-function check_cred() {
-  Parse.initialize("TnvJePY5vT2oSuP3VgWsO8OTWwZO2rMX0ZdwvRIh", "moibVX5koKKKLKGvMmavEGVDkvZ3lVfWw9x23cIt");
-  var currentUser = Parse.User.current();
-  if (currentUser) {
-    alert("Welcome " + currentUser.get('username'));
-  } else {
-    alert("Please login");
-    window.location.href="./login.html";
-  }
-}
+<script type="text/javascript" src="./js/check_cred.js">
 </script>
 <script type="text/javascript">
 function submit() {
@@ -75,33 +113,64 @@ function submit() {
   var Hosts = Parse.Object.extend("Hosts");
   var info = new Hosts();
   var curTime = new Date();
-  var StartHour = document.getElementById("StartHour").value;
-  var StartMin = document.getElementById("StartMin").value;
-  var EndHour = document.getElementById("EndHour").value;
-  var EndMin = document.getElementById("EndMin").value;
+  var StartHour = Number(document.getElementById("StartHour").value);
+  var StartMin = Number(document.getElementById("StartMin").value);
+  var EndHour = Number(document.getElementById("EndHour").value);
+  var EndMin = Number(document.getElementById("EndMin").value);
+  var item = document.getElementById('item').value;
+  if (item === "") {
+    alert("Item field cannot be empty");
+    return false;
+  }
+  var price = document.getElementById('price').value;
+  if (price === null) {
+    price = 0;
+  }
+  var addr = document.getElementById('addr').value;
+  var city = document.getElementById('city').value;
+  var state = document.getElementById('state').value;
+  if (addr === "" || city === "" || state.length !== 2) {
+    alert("The address fields cannot be empty");
+    return false;
+  }
   if(document.getElementsByName("startAMPM").value == "PM")
   		StartHour += 12;
   if(document.getElementsByName("endAMPM").value  == "PM")
   		EndHour += 12;
-  info.set("FoodName", document.getElementById('item').value);
+  info.set("FoodName", item);
+  info.set("HostName", currentUser.getUsername());
+  var fileUploadControl = $("#FoodPic")[0];
+  if (fileUploadControl.files.length > 0) {
+  	var file = fileUploadControl.files[0];
+  	var name = "photo.jpg";
+  	var parseFile = new Parse.File(name, file);
+  	parseFile.save().then(function() {}, 
+  	function(error) {
+      alert("Error: " + error.code + " " + error.message);
+  	});
+  }
+  info.set("FoodPic", parseFile);
+  info.save();
   info.set("Desc", document.getElementById('desc').value);
-  info.set("FoodPic", Number(document.getElementById('pic')));
-  info.set("Price", Number(document.getElementById('price').value));
-  info.set("Address", document.getElementById('addr').value);
-  info.set("City", document.getElementById('city').value);
-  info.set("State", document.getElementById('state').value);
-  info.set("StartTime", new Date(curTime.getYear(), curTime.getMonth(), curTime.getDay(),
-  			  StartHour, StartMin));
-  
-  info.set("EndTime", new Date(curTime.getYear(), curTime.getMonth(), curTime.getDay(),
-  			  EndHour, EndMin));
+  info.set("Price", Number(price));
+  info.set("Address", addr);
+  info.set("City", city);
+  info.set("State", state);
+  info.set("StartTime", new Date(curTime.getYear(), Number(document.getElementById('month').value), Number(document.getElementById('day').value),
+  				StartHour, StartMin));
+  info.set("EndTime", new Date(curTime.getYear(), Number(document.getElementById('month').value), Number(document.getElementById('day').value),
+  				EndHour, EndMin));
   info.set("ServingsLeft", Number(document.getElementById('servings').value));
   info.set("IsDairyFree", Boolean(document.getElementById('isDairyFree').checked));
   info.set("IsNutFree", Boolean(document.getElementById('isNutFree').checked));
   info.set("IsGlutenFree", Boolean(document.getElementById('isGlutenFree').checked));
   info.set("IsKosher", Boolean(document.getElementById('isKosher').checked));
   info.set("IsVeg", Boolean(document.getElementById('isVeg').checked));
-  info.set("HostName", currentUser.getUsername());
+
+  var infoACL = new Parse.ACL(currentUser);
+  infoACL.setWriteAccess(currentUser, true);
+  infoACL.setPublicReadAccess(true);
+  info.setACL(infoACL);
   info.save(null, {
     success: function(info) {
       alert("Successful submission");
