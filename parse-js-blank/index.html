@@ -72,7 +72,33 @@ p {text-align:center;font-family:Cursive;font-size:18px;font-style:normal;font-w
 	  						(pFree && !results[i].get("IsNutFree")))
 	  						continue;
 						var entry = document.createElement('li');
-						entry.appendChild(document.createTextNode(results[i].get("HostName")));
+						entry.appendChild(document.createTextNode(results[i].get("HostName") + "   "));
+						entry.appendChild(document.createTextNode(results[i].get("FoodName") + "   "));
+						entry.appendChild(document.createTextNode(results[i].get("ServingsLeft") + "   "));
+						entry.appendChild(document.createTextNode(results[i].get("DistanceFromMe") + "   "));
+						entry.appendChild(document.createTextNode(results[i].get("NumStars") + "   "));
+						var endTime = {"__type":"Date","iso":results[i].get("EndTime")};
+						endTime = new Date(endTime.iso);
+						var curTime = new Date().getTime();
+						if(endTime.getTime() < curTime) { 
+							document.write(curTime + "    ", endTime.getTime());
+							continue;}
+						else {
+							var timeLeft = endTime.getTime() - curTime;
+							var daysLeft = timeLeft / 1000 / 60 / 60 / 24;
+							var hoursLeft = timeLeft / 1000 / 60 / 60 - Math.floor(daysLeft) * 24;
+							var minutesLeft = timeLeft / 1000 / 60 - Math.floor(daysLeft) * 24 * 60 - Math.floor(hoursLeft) * 60;
+							var secondsLeft = timeLeft / 1000 - Math.floor(daysLeft) * 24 * 60 * 60 - Math.floor(hoursLeft) * 60 * 60 - Math.floor(minutesLeft) * 60;
+							if(Math.floor(daysLeft) > 0) 
+								entry.appendChild(document.createTextNode(Math.floor(daysLeft) + " days "));
+							if(Math.floor(hoursLeft) > 0)
+								entry.appendChild(document.createTextNode(Math.floor(hoursLeft) + " hours "));
+							if(Math.floor(minutesLeft) > 0)
+								entry.appendChild(document.createTextNode(Math.floor(minutesLeft) + " minutes "));
+							if(Math.floor(secondsLeft) > 0)
+								entry.appendChild(document.createTextNode(Math.floor(secondsLeft) + " seconds left"));								
+						}
+						
 						hosts.appendChild(entry);
 	  				}
 				},
