@@ -64,11 +64,19 @@ p {text-align:center;font-family:Cursive;font-size:18px;font-style:normal;font-w
 			var pFree = buttonStatus[2];
 			var Hosts = Parse.Object.extend("Hosts");
 			var query = new Parse.Query(Hosts);
+			query.greaterThan("ServingsLeft", 0);
 			query.find({
 				success: function(results){
 					var hosts =	document.getElementById('hosts');
 					while(hosts.hasChildNodes())
 						hosts.removeChild(hosts.childNodes[0]);
+						
+					var body = document.getElementsByTagName('body')[0];
+					var tbl = document.createElement('table');
+					tbl.style.width = '100%';
+					tbl.setAttribute('border', '1');
+										
+					
 					results.sort(compare);		
 	  				for(var i = 0; i < results.length; i++){
 	  					if((dFree && !results[i].get("IsDairyFree")) ||
@@ -76,24 +84,7 @@ p {text-align:center;font-family:Cursive;font-size:18px;font-style:normal;font-w
 	  						(pFree && !results[i].get("IsNutFree")))
 	  						continue;
 						var entry = document.createElement('li');
-						/*
-						var myTable= "<table><tr><td style='width: 100px; color: red;'>Col Head 1</td>";
-     					myTable+= "<td style='width: 100px; color: red; text-align: right;'>Col Head 2</td>";
-    					myTable+="<td style='width: 100px; color: red; text-align: right;'>Col Head 3</td></tr>";
-
-    					myTable+="<tr><td style='width: 100px;                   '>---------------</td>";
-    					myTable+="<td     style='width: 100px; text-align: right;'>---------------</td>";
-    					myTable+="<td     style='width: 100px; text-align: right;'>---------------</td></tr>";
-						myTable+="<tr><td style='width: 100px;'>HostName " + results[i].get("HostName") + " is:</td>";
-						myTable+="<td style='width: 100px; text-align: right;'>" + results[i].get("FoodName") + "</td>";
-   					myTable+="<td style='width: 100px; text-align: right;'>" + results[i].get("ServingsLeft") + "</td>";
-   					myTable+="<td style='width: 100px; text-align: right;'>" + results[i].get("DistanceFromMe") + "</td>";
-   					myTable+="<td style='width: 100px; text-align: right;'>" + results[i].get("NumStars") + "</td>";
-   
-   					myTable+="</table>";
-   					document.getElementById('table').innerHTML = myTable;
-   					*/
-   					
+						  					
 						entry.appendChild(document.createTextNode(results[i].get("HostName") + "   "));
 						entry.appendChild(document.createTextNode(results[i].get("FoodName") + "   "));
 						entry.appendChild(document.createTextNode(results[i].get("ServingsLeft") + "   "));
@@ -118,7 +109,6 @@ p {text-align:center;font-family:Cursive;font-size:18px;font-style:normal;font-w
 								entry.appendChild(document.createTextNode(Math.floor(minutesLeft) + " minutes "));
 							if(Math.floor(secondsLeft) > 0)
 								entry.appendChild(document.createTextNode(Math.floor(secondsLeft) + " seconds left"));		
-												
 						}
 						hosts.appendChild(entry);
 	  				}
