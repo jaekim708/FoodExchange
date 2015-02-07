@@ -76,7 +76,6 @@ Password:
 function fblogin() {
 Parse.FacebookUtils.logIn(null, {
   success: function(user) {
-  debugger;
     if (!user.existed()) {
       alert("User signed up and logged in through Facebook!");
     } else {
