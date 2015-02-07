@@ -48,7 +48,11 @@ p {text-align:center;font-family:Cursive;font-size:18px;font-style:normal;font-w
 	</form>
 	
 	<ul style="list-style: none;"><li id="hosts"></li>
-
+	<table>	
+		<tr>
+				
+		</tr>	
+	</table>
   </div>
   <script type="text/javascript">
   		Parse.initialize("TnvJePY5vT2oSuP3VgWsO8OTWwZO2rMX0ZdwvRIh", "moibVX5koKKKLKGvMmavEGVDkvZ3lVfWw9x23cIt");
@@ -72,6 +76,24 @@ p {text-align:center;font-family:Cursive;font-size:18px;font-style:normal;font-w
 	  						(pFree && !results[i].get("IsNutFree")))
 	  						continue;
 						var entry = document.createElement('li');
+						/*
+						var myTable= "<table><tr><td style='width: 100px; color: red;'>Col Head 1</td>";
+     					myTable+= "<td style='width: 100px; color: red; text-align: right;'>Col Head 2</td>";
+    					myTable+="<td style='width: 100px; color: red; text-align: right;'>Col Head 3</td></tr>";
+
+    					myTable+="<tr><td style='width: 100px;                   '>---------------</td>";
+    					myTable+="<td     style='width: 100px; text-align: right;'>---------------</td>";
+    					myTable+="<td     style='width: 100px; text-align: right;'>---------------</td></tr>";
+						myTable+="<tr><td style='width: 100px;'>HostName " + results[i].get("HostName") + " is:</td>";
+						myTable+="<td style='width: 100px; text-align: right;'>" + results[i].get("FoodName") + "</td>";
+   					myTable+="<td style='width: 100px; text-align: right;'>" + results[i].get("ServingsLeft") + "</td>";
+   					myTable+="<td style='width: 100px; text-align: right;'>" + results[i].get("DistanceFromMe") + "</td>";
+   					myTable+="<td style='width: 100px; text-align: right;'>" + results[i].get("NumStars") + "</td>";
+   
+   					myTable+="</table>";
+   					document.getElementById('table').innerHTML = myTable;
+   					*/
+   					
 						entry.appendChild(document.createTextNode(results[i].get("HostName") + "   "));
 						entry.appendChild(document.createTextNode(results[i].get("FoodName") + "   "));
 						entry.appendChild(document.createTextNode(results[i].get("ServingsLeft") + "   "));
@@ -80,9 +102,8 @@ p {text-align:center;font-family:Cursive;font-size:18px;font-style:normal;font-w
 						var endTime = {"__type":"Date","iso":results[i].get("EndTime")};
 						endTime = new Date(endTime.iso);
 						var curTime = new Date().getTime();
-						if(endTime.getTime() < curTime) { 
-							document.write(curTime + "    ", endTime.getTime());
-							continue;}
+						if(endTime.getTime() < curTime) 
+							continue;
 						else {
 							var timeLeft = endTime.getTime() - curTime;
 							var daysLeft = timeLeft / 1000 / 60 / 60 / 24;
@@ -96,9 +117,9 @@ p {text-align:center;font-family:Cursive;font-size:18px;font-style:normal;font-w
 							if(Math.floor(minutesLeft) > 0)
 								entry.appendChild(document.createTextNode(Math.floor(minutesLeft) + " minutes "));
 							if(Math.floor(secondsLeft) > 0)
-								entry.appendChild(document.createTextNode(Math.floor(secondsLeft) + " seconds left"));								
+								entry.appendChild(document.createTextNode(Math.floor(secondsLeft) + " seconds left"));		
+												
 						}
-						
 						hosts.appendChild(entry);
 	  				}
 				},
