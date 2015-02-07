@@ -19,6 +19,7 @@ Username: <input type="text" name="name" id="name" maxlength = "16"><br>
 Password: <input type="password" name="pass" id="pass" maxlength = "20"><br>
 Re-type password: <input type="password" name="passCopy" id="passCopy" maxlength = "20"><br>
 Email: <input type="email" name="email" id="email"><br>
+Address: <input type="address" name="address" id="address"><br>
 <p><input type="button" onClick="submit()" value="Submit"></p>
 
 <script type="text/javascript">
@@ -27,6 +28,7 @@ function submit() {
     var user = new Parse.User();
     var pass = document.getElementById('pass').value;
     var passCopy = document.getElementById('passCopy').value;
+    var address = document.getElementById('address').value;
     if (pass !== passCopy) {
       alert("Passwords do not match");
       return false;
@@ -34,6 +36,7 @@ function submit() {
     user.set("username", document.getElementById('name').value);
     user.set("password", pass);
     user.set("email", document.getElementById('email').value);
+    user.set("address", address);
     user.signUp(null, {
       success: function(user) {
         alert("Signup success!");
