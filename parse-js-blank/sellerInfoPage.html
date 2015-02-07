@@ -24,11 +24,10 @@ div.c1 {display:none}
 
 <body>
 <img src="https://graph.facebook.com/swaroop.akkineni/picture?type=large" alt="The official HTML5 Icon">
-<h5 >This is heading 5</h5>
+<h5 id="header">This is heading 5</h5>
 
 
 <style type="text/css">
-p{="https://graph.facebook.com/swaroop.akkineni/name"}
 body {background-color:ffffff);}
 h1{text-align:center;font-family:Cursive;color:000000;}
 p {text-align:center;font-family:Cursive;font-size:18px;font-style:normal;font-weight:normal;font-variant:small-caps;color:000000;}
@@ -52,20 +51,27 @@ p {text-align:center;font-family:Cursive;font-size:18px;font-style:normal;font-w
 		};
 
 function fblogin() {
-Parse.FacebookUtils.logIn(null, {
-  success: function(user) {
-  debugger;
-    if (!user.existed()) {
-      alert("User signed up and logged in through Facebook!");
-   	 } else {
-      alert("User logged in through Facebook!");
-    		}
-  },
-  error: function(user, error) {
-  debugger;
-    alert(error.message + " User cancelled the Facebook login or did not fully authorize.");
-  }
-}); 
+
+FB.getLoginStatus(function(response) {
+      if (response.status != 'connected') {
+        Parse.FacebookUtils.logIn(null, {
+		  success: function(user) {
+		  //debugger;
+			if (!user.existed()) {
+			  alert("User signed up and logged in through Facebook!");
+			 } else {
+			  alert("User logged in through Facebook!");
+			}
+		  }	
+		  });
+      }
+   });
+  
+  FB.api('/me', {fields: 'last_name'}, function(response) {
+ 		console.log(response);
+ 		console.log(response.last_name);
+ 		$("#header").html(response.last_name);
+  }); 
 }
 
    (function(d, s, id){
