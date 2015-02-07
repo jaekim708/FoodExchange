@@ -46,17 +46,15 @@ p {text-align:center;font-family:Cursive;font-size:18px;font-style:normal;font-w
 	<input type="checkbox" id="pFree" onclick="getList()"> Peanut-Free
 	</form>
 	
-	<ul style="list-style: none;"><li id="hosts"></li>
-	<table>	
-		<tr>
-				
-		</tr>	
-	</table>
+	<PRE id="test" style="WHITE-SPACE: pre">
+	<ul style="list-style: none;">
+	<li id="hosts"></PRE></li>
   </div>
   <script type="text/javascript">
   		Parse.initialize("TnvJePY5vT2oSuP3VgWsO8OTWwZO2rMX0ZdwvRIh", "moibVX5koKKKLKGvMmavEGVDkvZ3lVfWw9x23cIt");
 		getList();
 		function getList(){		
+			var numCols = 7;
 			var buttonStatus = getButtonStatus();
 			var dFree = buttonStatus[0];
 			var gFree = buttonStatus[1];
@@ -66,32 +64,27 @@ p {text-align:center;font-family:Cursive;font-size:18px;font-style:normal;font-w
 			query.greaterThan("ServingsLeft", 0);
 			query.find({
 				success: function(results){
-					var hosts =	document.getElementById('hosts');
-					while(hosts.hasChildNodes())
-						hosts.removeChild(hosts.childNodes[0]);
-						
+					results.sort(compare);	
+        			document.getElementById("hosts").innerHTML = "";
+					var pTag = document.createElement('p');	
 					var body = document.getElementsByTagName('body')[0];
 					var tbl = document.createElement('table');
 					tbl.style.width = '100%';
+            	tbl.setAttribute("cellpadding","5");
+            	tbl.style.height = "130px";
 					tbl.setAttribute('border', '1');
-										
+					var tbdy=document.createElement('tbody');
 					
-					results.sort(compare);		
+	            pTag.setAttribute("rowspan","2");
 	  				for(var i = 0; i < results.length; i++){
 	  					if((dFree && !results[i].get("IsDairyFree")) ||
 	  						(gFree && !results[i].get("IsGlutenFree")) ||
 	  						(pFree && !results[i].get("IsNutFree")))
 	  						continue;
-						var entry = document.createElement('li');
-						  					
-						entry.appendChild(document.createTextNode(results[i].get("HostName") + "   "));
-						entry.appendChild(document.createTextNode(results[i].get("FoodName") + "   "));
-						entry.appendChild(document.createTextNode(results[i].get("ServingsLeft") + "   "));
-						entry.appendChild(document.createTextNode(results[i].get("DistanceFromMe") + "   "));
-						entry.appendChild(document.createTextNode(results[i].get("NumStars") + "   "));
-						var endTime = {"__type":"Date","iso":results[i].get("EndTime")};
+  						var endTime = {"__type":"Date","iso":results[i].get("EndTime")};
 						endTime = new Date(endTime.iso);
 						var curTime = new Date().getTime();
+						var timeString = " ";
 						if(endTime.getTime() < curTime) 
 							continue;
 						else {
@@ -101,16 +94,54 @@ p {text-align:center;font-family:Cursive;font-size:18px;font-style:normal;font-w
 							var minutesLeft = timeLeft / 1000 / 60 - Math.floor(daysLeft) * 24 * 60 - Math.floor(hoursLeft) * 60;
 							var secondsLeft = timeLeft / 1000 - Math.floor(daysLeft) * 24 * 60 * 60 - Math.floor(hoursLeft) * 60 * 60 - Math.floor(minutesLeft) * 60;
 							if(Math.floor(daysLeft) > 0) 
-								entry.appendChild(document.createTextNode(Math.floor(daysLeft) + " days "));
+								timeString += Math.floor(daysLeft) + " days ";
 							if(Math.floor(hoursLeft) > 0)
-								entry.appendChild(document.createTextNode(Math.floor(hoursLeft) + " hours "));
+								timeString += Math.floor(hoursLeft) + " hours ";
 							if(Math.floor(minutesLeft) > 0)
-								entry.appendChild(document.createTextNode(Math.floor(minutesLeft) + " minutes "));
+								timeString += Math.floor(minutesLeft) + " minutes ";
 							if(Math.floor(secondsLeft) > 0)
-								entry.appendChild(document.createTextNode(Math.floor(secondsLeft) + " seconds left"));		
+								timeString += Math.floor(secondsLeft) + " seconds";		
 						}
-						hosts.appendChild(entry);
-	  				}
+	  					var tr1=document.createElement('tr');
+							var td1=document.createElement('td');
+	                  td1.setAttribute("width","100px");
+	                  td1.setAttribute("rowspan","2");
+	                  
+	                  	var imgTag = document.createElement("img");
+	                  	imgTag.setAttribute("width","100px");
+	                  	imgTag.setAttribute("height","100px");
+	                  	if(typeof results[i].get("HostPic") == 'undefined') 
+	                  		imgTag.src = "img/DefaultUserProf.png";
+								else 
+									imgTag.src = results[i].get("HostPic");
+	                  	imgTag.id = "avatar";
+	                  td1.appendChild(imgTag);
+	                  	var tdTextTag = document.createElement('td');
+	                  		 tdTextTag.setAttribute("height","30%");
+	                         tdTextTag.setAttribute("nowrap","1");
+	                         tdTextTag.setAttribute("valign", "center");
+	                         tdTextTag.setAttribute("style","font-weight: bold; font-size: 20px;");
+	                         tdTextTag.id = "text";
+	                         tdTextTag.innerHTML = results[i].get("HostName") + " is serving " + 
+	                         	results[i].get("FoodName") + " for $" + results[i].get("Price") + "!";
+	                  //td1.appendChild(tdTextTag);
+	               tr1.appendChild(td1);
+	               tr1.appendChild(tdTextTag);
+	               var tr2 = document.createElement('tr');
+	               	var tdTextTag2 = document.createElement('td');
+	               	tdTextTag2.setAttribute("valign", "top");
+	               	tdTextTag2.id = "text2"
+	               	tdTextTag2.innerHTML = results[i].get("ServingsLeft") + " servings left, " +
+	               		results[i].get("DistanceFromMe") + " miles away. " + results[i].get("NumStars") +
+	               		" stars. \n Closing in " +  timeString + ".";
+	               tr2.appendChild(tdTextTag2);
+                  
+						tbdy.appendChild(tr1);
+						tbdy.appendChild(tr2);
+	  				}	
+					tbl.appendChild(tbdy);
+					pTag.appendChild(tbl);
+					document.getElementById("hosts").appendChild(pTag);
 				},
 				error: function(error){
   	  	 			document.write("ERROR: " + error.message);
