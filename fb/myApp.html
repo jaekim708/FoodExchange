@@ -23,7 +23,7 @@
        window.fbAsyncInit = function() {
             Parse.FacebookUtils.init({
                     appId      : '1811821115709707',
-                    status     : false,
+                    status     : true,
                     cookie     : true,
                     xfbml      : true,
                     version    : 'v2.2'
@@ -34,6 +34,7 @@
 function fblogin() {
 Parse.FacebookUtils.logIn(null, {
   success: function(user) {
+  debugger;
     if (!user.existed()) {
       alert("User signed up and logged in through Facebook!");
     } else {
@@ -41,6 +42,7 @@ Parse.FacebookUtils.logIn(null, {
     }
   },
   error: function(user, error) {
+  debugger;
     alert(error.message + " User cancelled the Facebook login or did not fully authorize.");
   }
 }); 
