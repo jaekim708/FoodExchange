@@ -81,6 +81,36 @@ $.ajax({
 		error: function () {
 // Handle error
 		}
+	});$.ajax({
+		//gps
+		url: 'https://servicelink2eng.pnc.com/pnc/poc/locate/address?street=249 Fifth Ave&city=Pittsburgh&state=PA&zip=15213&client_id=84276e67-6951-46fc-a34b-9c9002361339',
+		method: 'GET',
+		dataType: 'json',
+		data: {
+			//client_id: '123456',
+			//customerKey: '503238'
+      street:'8 welsford st',
+            city:'pittsbrugh',
+      state:'pennslyvannia',
+      zip:'15213',
+
+		},
+		success: function (address) {
+      var results = JSON.parse(sessionStorage.results);
+      var i = JSON.parse(sessionStorage.index);
+      var item = results[i];
+			console.log(address); // Print results to the console
+      			document.write("Nearest Atm" + "<br>");
+			document.write("address:   " + address.locations[0].address.address1 + "<br>");
+			document.write("city :    " + address.locations[0].address.city + "<br>");
+			document.write("state:   " + address.locations[0].address.state + "<br>");
+			document.write("zip:   " + address.locations[0].address.zip + "<br>");
+      		//	document.write("distance:   " + address.locations[0].distance + " miles" + <br>");
+			document.write("<br>" + "<br>" + "<br>" );
+		},
+		error: function () {
+// Handle error
+		}
 	});
   
 }
