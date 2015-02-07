@@ -1,0 +1,63 @@
+<!doctype html>
+<head>
+  <meta charset="utf-8">
+
+  <title>My Parse App</title>
+  <meta name="description" content="My Parse App">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="css/reset.css">
+
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.3.4.min.js"></script>
+</head>
+
+<body>
+
+<div id="fb-root">
+</div>
+    <script>
+       //logic
+       
+       Parse.initialize("TnvJePY5vT2oSuP3VgWsO8OTWwZO2rMX0ZdwvRIh", "moibVX5koKKKLKGvMmavEGVDkvZ3lVfWw9x23cIt");
+
+       window.fbAsyncInit = function() {
+            Parse.FacebookUtils.init({
+                    appId      : '1811821115709707',
+                    status     : false,
+                    cookie     : true,
+                    xfbml      : true,
+                    version    : 'v2.2'
+            });
+            fblogin();
+		};
+
+function fblogin() {
+Parse.FacebookUtils.logIn(null, {
+  success: function(user) {
+    if (!user.existed()) {
+      alert("User signed up and logged in through Facebook!");
+    } else {
+      alert("User logged in through Facebook!");
+    }
+  },
+  error: function(user, error) {
+    alert(error.message + " User cancelled the Facebook login or did not fully authorize.");
+  }
+}); 
+}
+
+   (function(d, s, id){
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) {return;}
+    js = d.createElement(s); js.id = id;
+    js.src = "https://connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+
+
+</script> 
+<!--<button onclick="post('graph.facebook.com/me/feed', {message: 'Hello World'})"/> -->
+  
+</body>
+
+</html>
