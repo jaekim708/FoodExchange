@@ -54,7 +54,10 @@ p {text-align:center;font-family:Cursive;font-size:18px;font-style:normal;font-w
   		Parse.initialize("TnvJePY5vT2oSuP3VgWsO8OTWwZO2rMX0ZdwvRIh", "moibVX5koKKKLKGvMmavEGVDkvZ3lVfWw9x23cIt");
 		getList();
 		function getList(){		
-			[dFree, gFree, pFree] = getButtonStatus();
+			var buttonStatus = getButtonStatus();
+			var dFree = buttonStatus[0];
+			var gFree = buttonStatus[1];
+			var pFree = buttonStatus[2];
 			var Hosts = Parse.Object.extend("Hosts");
 			var query = new Parse.Query(Hosts);
 			query.find({
