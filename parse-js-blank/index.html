@@ -18,7 +18,7 @@
 </script>
 <script type="text/javascript">
 function redirect(id) {
-      sessionStorage.setItem('index', id);
+      sessionStorage.index = JSON.stringify(id);
       document.location.href='./orderForm.html';
     }
 </script>
@@ -155,7 +155,7 @@ p {text-align:center;font-family:Cursive;font-size:18px;font-style:normal;font-w
                   tr3.setAttribute("id", i);
                   tr3.setAttribute("value", "Buy");
                   tr3.setAttribute("onclick", "redirect(this.id)");
-                  sessionStorage.setItem("results", results);
+                  sessionStorage.results = JSON.stringify(results);
 
 						tbdy.appendChild(tr1);
 						tbdy.appendChild(tr2);

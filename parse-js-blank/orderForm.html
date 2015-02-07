@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-
+  
   <title>Order Form</title>
   <meta name="description" content="Order Form">
   <meta name="viewport" content="width=device-width">
@@ -13,20 +13,39 @@
   <script type="text/javascript" src="./js/check_cred.js"></script>
 </head>
 
-<body onclick()="check_cred()">
+<body onload="check_cred();displayForm()">
+<p id='p1'>
 <script type="text/javascript">
 function displayForm() {
-  var table = document.createElement('table');
-  var results = session.getItem('results');
-  var i = session.getItem('index');
+  var results = JSON.parse(sessionStorage.results);
+  var i = JSON.parse(sessionStorage.index);
   var item = results[i];
-  var name = item.get('FoodName');
-  var price = item.get('price');
-  var addr = item.get('Address');
-  var city = item.get('City');
-  var desc = item.ge
-  
+  console.log(results);
+  document.getElementById('p1').innerHTML = 'Item: ' + item.FoodName + '<br>Description: '
+                 + item.Desc + '<br>Address: '
+                 + item.Address + '<br>City: ' + item.City
+                 + '<br>Distance: ' + item.DistanceFromMe
+                 + '<br>Seller: ' + item.HostName
+                 + '<br>Price: $' + item.Price;
 }
+displayForm();
+</script>
+</p>
+<p><br>
+<input type='button' name='submit' id = 'submit_form' value = 'Confirm order'
+onclick='confirm_order()'><br>
+</p>
+<script type='text/javascript'>
+function confirm_order() {
+  var test = window.confirm("Are you sure you want to order?");
+  if (r === true) {
+    alert("Successful order");
+    document.location.href='./order_confirmation';
+  } else {
+    alert("Order cancelled");
+    document.location.href='./index.html';
+  }
+</script>
 </body>
 
 </html>
