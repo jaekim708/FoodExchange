@@ -29,29 +29,44 @@ div.c1 {display:none}
       <p><input type="submit" value="Selling food"></p>
     </form>
 
-		<ol id="hosts"></ol>
 		
+	<form action="">
+	<input type="checkbox" id="dFree" onclick="getList()"> Dairy-Free<br>
+	<input type="checkbox" id="gFree" onclick="getList()"> Gluten-Free<br>
+	<input type="checkbox" id="pFree" onclick="getList()"> Peanut-Free 
+	</form>
+	
+	<ol id="hosts"></ol>
+
   </div>
   <script type="text/javascript">
   		Parse.initialize("TnvJePY5vT2oSuP3VgWsO8OTWwZO2rMX0ZdwvRIh", "moibVX5koKKKLKGvMmavEGVDkvZ3lVfWw9x23cIt");
-		var Hosts = Parse.Object.extend("Hosts");
-		var query = new Parse.Query(Hosts);
-		document.write("ADSDASD");
-		query.find({
-			success: function(results){
-				results.sort(compare);		
-				var hosts =	document.getElementById('hosts');
-	  			for(var i = 0; i < results.length; i++){
-					var entry = document.createElement('li');
-					entry.appendChild(document.createTextNode(results[i].get("HostName")));
-					hosts.appendChild(entry);
-	  			}
-			},
-			error: function(error){
-  	  	 		document.write("ERROR: " + error.message);
-			}
-		});
-	  		
+		var dFree = document.getElementById("dFree").checked;
+		var gFree = document.getElementById("gFree").checked;
+		var pFree = document.getElementById("pFree").checked;
+		getList(dFree, gFree, pFree);
+		function getList(dFree, gFree, pFree){	
+			var Hosts = Parse.Object.extend("Hosts");
+			var query = new Parse.Query(Hosts);
+			query.find({
+				success: function(results){
+					results.sort(compare);		
+					var hosts =	document.getElementById('hosts');
+	  				for(var i = 0; i < results.length; i++){
+	  					if((dFree && !results[i].get("IsDairyFree")) ||
+	  						(gFree && !results[i].get("IsGlutenFree")) ||
+	  						(pFree && !results[i].get("IsNutFree")))
+	  						continue;
+						var entry = document.createElement('li');
+						entry.appendChild(document.createTextNode(results[i].get("HostName")));
+						hosts.appendChild(entry);
+	  				}
+				},
+				error: function(error){
+  	  	 			document.write("ERROR: " + error.message);
+				}
+			});
+	  	}
 		function compare(a, b){
 			if(a.DistanceToMe < b.DistanceToMe)
 				return -1;
