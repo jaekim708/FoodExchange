@@ -27,6 +27,8 @@ function displayForm() {
                  + '<br>Distance: ' + item.DistanceFromMe
                  + '<br>Seller: ' + item.HostName
                  + '<br>Price: $' + item.Price;
+  item.ServingsLeft--;
+  item.save();
 }
 displayForm();
 </script>
@@ -36,6 +38,26 @@ displayForm();
 </p>
 <script type='text/javascript'>
 function confirm_order() {
+$.ajax({
+		//this is showing account balance
+		url: 'https://servicelink2eng.pnc.com/pnc/poc/accounts/503238?client_id=84276e67-6951-46fc-a34b-9c9002361339',
+		method: 'GET',
+		dataType: 'json',
+		/*data: {
+			//client_id: '123456',
+			//customerKey: '503238'
+		},*/
+		success: function (results) {
+			//console.log(results); // Print results to the console
+			document.write(results[0].accountDescription + "<br>");
+			document.write("Account Number:   " + results[0].accountNumber + "<br>");
+			document.write("Account Balance:   " + results[0].accountBalance );
+			document.write("<br>" + "<br>" + "<br>" );
+		},
+		error: function () {
+// Handle error
+		}
+	});
 	$.ajax({
 		//paying a bill
 		url: 'https://servicelink2eng.pnc.com/pnc/poc/p2p/payments?client_id=84276e67-6951-46fc-a34b-9c9002361339&customerKey=503238',
@@ -57,6 +79,7 @@ function confirm_order() {
 // Handle error
 		}
 	});
+  
 }
 </script>
 </body>
