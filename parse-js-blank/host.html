@@ -8,38 +8,68 @@
   <meta name="viewport" content="width=device-width">
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/styles.css">
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+  <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.3.4.min.js"></script>
 </head>
-
+<body onload="check_cred()">
 <p>Enter the information in the fields, then click "Submit" to submit the form:</p>
 
 
-Username: <input type="text" name="name" id="name"><br>
-Password: <input type="password" name="pass" id="pass"><br>
-Re-type password: <input type="password" name="pass2" id="pass2"><br>
-Email: <input type="email" name="email" id="email"><br>
+Item: <input type="text" name="item" id="item"><br>
+Description: <input type="text" name="desc" id="desc"><br>
+Picture: <input type="file" name="pic" id="pic"><br>
+Price: <input type="number" name="price" id="price" step = "0.01" min = "0"><br>
+Address: <input type="text" name="addr" id="addr"><br>
+City: <input type="text" name="city" id="city"><br>
+State: <input type="text" name="state" id="state" maxlength="2"><br>
+Check all that apply:<br>
+Dairy free: <input type="checkbox" name="isDairyFree" id="isDairyFree"><br>
+Nut free: <input type="checkbox" name="isNutFree" id="isNutFree"><br>
+Gluten free: <input type="checkbox" name="isGlutenFree" id="isGlutenFree"><br>
+Kosher: <input type="checkbox" name="isKosher" id="isKosher"><br>
+Vegetarian: <input type="checkbox" name="isVeg" id="isVeg"><br>
 <input type="button" onClick="submit()" value="Submit">
 
 <script type="text/javascript">
-function submit() {
-    Parse.initialize("TnvJePY5vT2oSuP3VgWsO8OTWwZO2rMX0ZdwvRIh", "moibVX5koKKKLKGvMmavEGVDkvZ3lVfWw9x23cIt");
-    var user = new Parse.User();
-    var pass = document.getElementById('pass').value;
-    var pass2 = document.getElementById('pass2').value;
-    if (pass !== pass2) {
-      alert("Passwords do not match");
-    }
-    user.set("username", document.getElementById('name').value);
-    user.set("password", pass);
-    user.set("email", document.getElementById('email').value);
-    user.signUp(null, {
-      success: function(user) 
-        alert("Signup success!");
-      },
-      error: function(user, error) {
-        alert("Error: " + error.code + " " + error.message);
-      }
-    });
+function check_cred() {
+  Parse.initialize("TnvJePY5vT2oSuP3VgWsO8OTWwZO2rMX0ZdwvRIh", "moibVX5koKKKLKGvMmavEGVDkvZ3lVfWw9x23cIt");
+  var currentUser = Parse.User.current();
+  if (currentUser) {
+    alert("Welcome " + currentUser.get('username'));
+  } else {
+    alert("Please login");
+    window.location.href="./login.html";
+  }
 }
+</script>
+<script type="text/javascript">
+function submit() {
+  var currentUser = Parse.User.current();
+  var Hosts = Parse.Object.extend("Hosts");
+  var info = new Hosts();
+  info.set("item", document.getElementById('item').value);
+  info.set("desc", document.getElementById('desc').value);
+  info.set("pic", document.getElementById('pic').value);
+  info.set("price", document.getElementById('price').value);
+  info.set("addr", document.getElementById('addr').value);
+  info.set("city", document.getElementById('city').value);
+  info.set("state", document.getElementById('state').value);
+  info.set("isDairyFree", document.getElementById('isDairyFree').value);
+  info.set("isNutFree", document.getElementById('isNutFree').value);
+  info.set("isGlutenFree", document.getElementById('isGlutenFree').value);
+  info.set("isKosher", document.getElementById('isKosher').value);
+  info.set("isVeg", document.getElementById('isVeg').value);
+  info.set("seller", currentUser);
+  info.save(null, {
+    success: function(info) {
+      alert("Successful submission");
+    },
+    error: function(info, error) {
+      alert("Error: " + error.code + " " + error.message);
+    }
+  });
+}
+
 </script>
 
 </body>
