@@ -33,6 +33,7 @@ p {text-align:center;font-family:Cursive;font-size:18px;font-style:normal;font-w
 <h1>We find the nearest available food for you! =)<h1>
 
 <p>too damn lazy to make your own food? we got you man.<p> <p style="text-align:right;">Please <a href="login.html">LogIn</a>.</p>
+    <p style="text-align:right;"><input type="button" value = "Logout" onclick="logout()"></p>
     <p style="text-align:right;">List of food below</p>
 
     <form method="link" action="host.html">
@@ -50,6 +51,12 @@ p {text-align:center;font-family:Cursive;font-size:18px;font-style:normal;font-w
 	<ul style="list-style: none;">
 	<li id="hosts"></PRE></li>
   </div>
+  <script type = "text/javascript">
+  function logout() {
+    Parse.User.logOut();
+    var currentUser = Parse.User.current();
+  }
+  </script>
   <script type="text/javascript">
   		Parse.initialize("TnvJePY5vT2oSuP3VgWsO8OTWwZO2rMX0ZdwvRIh", "moibVX5koKKKLKGvMmavEGVDkvZ3lVfWw9x23cIt");
 		getList();
