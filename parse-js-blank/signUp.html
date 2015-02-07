@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+
+  <title>Sign-Up Page</title>
+  <meta name="description" content="Sign Up Page">
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<p>Enter the information in the fields, then click "Submit" to submit the form:</p>
+
+
+Username: <input type="text" name="name" id="name"><br>
+Password: <input type="password" name="pass" id="pass"><br>
+Re-type password: <input type="password" name="pass2" id="pass2"><br>
+Email: <input type="email" name="email" id="email"><br>
+<input type="button" onClick="submit()" value="Submit">
+
+<script type="text/javascript">
+function submit() {
+    Parse.initialize("TnvJePY5vT2oSuP3VgWsO8OTWwZO2rMX0ZdwvRIh", "moibVX5koKKKLKGvMmavEGVDkvZ3lVfWw9x23cIt");
+    var user = new Parse.User();
+    var pass = document.getElementById('pass').value;
+    var pass2 = document.getElementById('pass2').value;
+    if (pass !== pass2) {
+      alert("Passwords do not match");
+    }
+    user.set("username", document.getElementById('name').value);
+    user.set("password", pass);
+    user.set("email", document.getElementById('email').value);
+    user.signUp(null, {
+      success: function(user) {
+        alert("Signup success!");
+      },
+      error: function(user, error) {
+        alert("Error: " + error.code + " " + error.message);
+      }
+    });
+}
+</script>
+
+</body>
+</html>
