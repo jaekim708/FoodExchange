@@ -54,6 +54,7 @@ p {text-align:center;font-family:Cursive;font-size:18px;font-style:normal;font-w
   <script type = "text/javascript">
   function logout() {
     Parse.User.logOut();
+    alert("Logged Out");
     var currentUser = Parse.User.current();
   }
   </script>

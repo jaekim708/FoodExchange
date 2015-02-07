@@ -30,17 +30,7 @@ Kosher: <input type="checkbox" name="isKosher" id="isKosher"><br>
 Vegetarian: <input type="checkbox" name="isVeg" id="isVeg"><br>
 <input type="button" onClick="submit()" value="Submit">
 
-<script type="text/javascript">
-function check_cred() {
-  Parse.initialize("TnvJePY5vT2oSuP3VgWsO8OTWwZO2rMX0ZdwvRIh", "moibVX5koKKKLKGvMmavEGVDkvZ3lVfWw9x23cIt");
-  var currentUser = Parse.User.current();
-  if (currentUser) {
-    alert("Welcome " + currentUser.get('username'));
-  } else {
-    alert("Please login");
-    window.location.href="./login.html";
-  }
-}
+<script type="text/javascript" src="./js/check_cred.js">
 </script>
 <script type="text/javascript">
 function submit() {
@@ -60,6 +50,10 @@ function submit() {
   info.set("isKosher", document.getElementById('isKosher').value);
   info.set("isVeg", document.getElementById('isVeg').value);
   info.set("seller", currentUser);
+  var infoACL = new Parse.ACL(currentUser);
+  infoACL.setWriteAccess(currentUser, true);
+  infoACL.setPublicReadAccess(true);
+  info.setACL(infoACL);
   info.save(null, {
     success: function(info) {
       alert("Successful submission");
