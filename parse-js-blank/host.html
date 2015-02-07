@@ -8,36 +8,32 @@
   <meta name="viewport" content="width=device-width">
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/styles.css">
-  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-  <script type="text/javascript" src="http://www.parsecdn.com/js/parse-1.3.4.min.js"></script>
 </head>
 
 <p>Enter the information in the fields, then click "Submit" to submit the form:</p>
 
 
-Username: <input type="text" name="name" id="name" maxlength = "16"><br>
-Password: <input type="password" name="pass" id="pass" maxlength = "20"><br>
-Re-type password: <input type="password" name="passCopy" id="passCopy" maxlength = "20"><br>
+Username: <input type="text" name="name" id="name"><br>
+Password: <input type="password" name="pass" id="pass"><br>
+Re-type password: <input type="password" name="pass2" id="pass2"><br>
 Email: <input type="email" name="email" id="email"><br>
-<p><input type="button" onClick="submit()" value="Submit"></p>
+<input type="button" onClick="submit()" value="Submit">
 
 <script type="text/javascript">
 function submit() {
     Parse.initialize("TnvJePY5vT2oSuP3VgWsO8OTWwZO2rMX0ZdwvRIh", "moibVX5koKKKLKGvMmavEGVDkvZ3lVfWw9x23cIt");
     var user = new Parse.User();
     var pass = document.getElementById('pass').value;
-    var passCopy = document.getElementById('passCopy').value;
-    if (pass !== passCopy) {
+    var pass2 = document.getElementById('pass2').value;
+    if (pass !== pass2) {
       alert("Passwords do not match");
-      return false;
     }
     user.set("username", document.getElementById('name').value);
     user.set("password", pass);
     user.set("email", document.getElementById('email').value);
     user.signUp(null, {
-      success: function(user) {
+      success: function(user) 
         alert("Signup success!");
-        document.location.href = './index.html';
       },
       error: function(user, error) {
         alert("Error: " + error.code + " " + error.message);
@@ -46,6 +42,5 @@ function submit() {
 }
 </script>
 
-<img src="http://fc06.deviantart.net/fs70/f/2012/020/1/4/love_kitty__by_bellajynx-d4n0dwg.gif" style="max-width:100%" />
 </body>
 </html>

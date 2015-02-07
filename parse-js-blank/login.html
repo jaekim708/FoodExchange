@@ -2,8 +2,8 @@
 <head>
   <meta charset="utf-8">
 
-  <title>My Parse App</title>
-  <meta name="description" content="My Parse App">
+  <title>Login</title>
+  <meta name="description" content="Login">
   <meta name="viewport" content="width=device-width">
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/styles.css">
@@ -17,17 +17,94 @@ body {background-color:ffffff;background-image:url(http://www.cohabitaire.com/wp
 </style>
 
 <p>
-<form action="/html/tags/html_form_tag_action.cfm" method="get">
-ID:
-<input type="text" maxlength="100" />
+
+Username:
+<input type="text" maxlength="16" name="user" id="user"/>
 <br />
 Password:
-<input type="password" maxlength="100" />
-<input type="submit" value="Submit" />
-</form>
-</p>
+<input type="password" maxlength="20" name="pass" id="pass"/>
+<input type="submit" value="Submit" onClick="login()"/>
+<<<<<<< Updated upstream
 
+</p>
+<script type="text/javascript">
+  function login() {
+    Parse.initialize("TnvJePY5vT2oSuP3VgWsO8OTWwZO2rMX0ZdwvRIh", "moibVX5koKKKLKGvMmavEGVDkvZ3lVfWw9x23cIt");
+    Parse.User.logIn(document.getElementById('user').value, document.getElementById('pass').value, {
+      success: function(user) {
+        alert("Login success!");
+        document.location.href='./index.html';
+      },
+      error: function(user, error) {
+        alert("Error: " + error.code + " " + error.message);
+      }
+    });
+  }
+</script>
+  
 <p style="text-align:right;"><a href="">Sign in via Facebook</a></p>
+=======
+
+</p>
+<script type="text/javascript">
+  function login() {
+    Parse.initialize("TnvJePY5vT2oSuP3VgWsO8OTWwZO2rMX0ZdwvRIh", "moibVX5koKKKLKGvMmavEGVDkvZ3lVfWw9x23cIt");
+    Parse.User.logIn(document.getElementById('user').value, document.getElementById('pass').value, {
+      success: function(user) {
+        alert("Login success!");
+        document.location.href='./index.html';
+      },
+      error: function(user, error) {
+        alert("Error: " + error.code + " " + error.message);
+      }
+    });
+  }
+</script>
+  <script>
+       //logic
+       
+       Parse.initialize("TnvJePY5vT2oSuP3VgWsO8OTWwZO2rMX0ZdwvRIh", "moibVX5koKKKLKGvMmavEGVDkvZ3lVfWw9x23cIt");
+
+       window.fbAsyncInit = function() {
+            Parse.FacebookUtils.init({
+                    appId      : '1811821115709707',
+                    status     : true,
+                    cookie     : true,
+                    xfbml      : true,
+                    version    : 'v2.2'
+            });
+            fblogin();
+		};
+
+function fblogin() {
+Parse.FacebookUtils.logIn(null, {
+  success: function(user) {
+  debugger;
+    if (!user.existed()) {
+      alert("User signed up and logged in through Facebook!");
+    } else {
+      alert("User logged in through Facebook!");
+    }
+  },
+  error: function(user, error) {
+ // debugger;
+  //  alert(error.message + " User cancelled the Facebook login or did not fully authorize.");
+  }
+}); 
+}
+
+   (function(d, s, id){
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) {return;}
+    js = d.createElement(s); js.id = id;
+    js.src = "https://connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
+
+
+</script> 
+<p style="text-align:right;" onclick="myFunction()"><a href="">Sign in via Facebook</a></p>
+>>>>>>> Stashed changes
 <p style="text-align:right;"><a href="signUp.html">Sign Up</a></p>
 </body>
 
