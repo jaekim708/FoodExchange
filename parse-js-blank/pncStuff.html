@@ -23,7 +23,6 @@ div.c1 {display:none}
 
 
 <body>
-<img src="https://graph.facebook.com/swaroop.akkineni/picture?type=large" alt="The official HTML5 Icon">
 
 
 <!--{
@@ -74,6 +73,30 @@ div.c1 {display:none}
 		}
 	});
 		$.ajax({
+		//atm
+		url: 'https://servicelink2eng.pnc.com/pnc/poc/locate/address?street=249 Fifth Ave&city=Pittsburgh&state=PA&zip=15222&client_id=84276e67-6951-46fc-a34b-9c9002361339',
+		method: 'GET',
+		dataType: 'json',
+		data: {
+			street:'8 welsford st',
+			city:'pittsburgh',
+			state:'Pennslyvannia',
+			zip:'15213'
+		},
+		success: function (address) {
+			console.log(address); // Print results to the console
+			document.write("Nearest Atm:" + "<br>");
+			document.write(address.locations[0].address.address1 + "<br>");
+			//document.write("Deposit to account:    " + address.city + "<br>");
+			//document.write("Due By:   " + address.state + "<br>");
+			//document.write("Due By:   " + address.zip + "<br>");
+			//document.write("<br>" + "<br>" + "<br>" );
+		},
+		error: function () {
+// Handle error
+		}
+	});
+		$.ajax({
 		//paying a bill
 		url: 'https://servicelink2eng.pnc.com/pnc/poc/p2p/payments?client_id=84276e67-6951-46fc-a34b-9c9002361339&customerKey=503238',
 		method: 'GET',
@@ -83,7 +106,7 @@ div.c1 {display:none}
 			//customerKey: '503238'
 		},*/
 		success: function (payment) {
-			console.log(payment); // Print results to the console
+			//console.log(payment); // Print results to the console
 			document.write("Amount to pay:   " + payment[0].amount + "<br>");
 			document.write("Account Number :    " + payment[0].payFromAccount + "<br>");
 			document.write("Send Date:   " + payment[0].sendData + "<br>");

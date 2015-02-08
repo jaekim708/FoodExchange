@@ -18,8 +18,13 @@
 Username: <input type="text" name="name" id="name" maxlength = "16"><br>
 Password: <input type="password" name="pass" id="pass" maxlength = "20"><br>
 Re-type password: <input type="password" name="passCopy" id="passCopy" maxlength = "20"><br>
+Bank_Account: <input type="bankAccount" name="bankAccount" id="bankAccount" maxlength = "6"><br>
 Email: <input type="email" name="email" id="email"><br>
+<<<<<<< Updated upstream
 Address: <input type="address" name="address" id="address"><br>
+=======
+Address:<input type="Address" name="Address" id="Address"><br>
+>>>>>>> Stashed changes
 <p><input type="button" onClick="submit()" value="Submit"></p>
 
 <script type="text/javascript">
@@ -28,11 +33,17 @@ function submit() {
     var user = new Parse.User();
     var pass = document.getElementById('pass').value;
     var passCopy = document.getElementById('passCopy').value;
+<<<<<<< Updated upstream
     var address = document.getElementById('address').value;
+=======
+    var account =document.getElementById('bankAccount').value;
+    var address =document.getElementById('Address').value;
+>>>>>>> Stashed changes
     if (pass !== passCopy) {
       alert("Passwords do not match");
       return false;
     }
+    user.set(
     user.set("username", document.getElementById('name').value);
     user.set("password", pass);
     user.set("email", document.getElementById('email').value);
