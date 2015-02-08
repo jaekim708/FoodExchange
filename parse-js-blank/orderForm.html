@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8">
-
+  
   <title>Order Form</title>
   <meta name="description" content="Order Form">
   <meta name="viewport" content="width=device-width">
@@ -13,11 +13,59 @@
   <script type="text/javascript" src="./js/check_cred.js"></script>
 </head>
 
+<<<<<<< HEAD
 <body >
 <button onclick="myFunction()">Order</button>
 
 <script>
 function myFunction(){
+=======
+<body onload="check_cred();displayForm()">
+<p id='p1'>
+<script type="text/javascript">
+function displayForm() {
+  var results = JSON.parse(sessionStorage.results);
+  var i = JSON.parse(sessionStorage.index);
+  var item = results[i];
+  console.log(results);
+  document.getElementById('p1').innerHTML = 'Item: ' + item.FoodName + '<br>Description: '
+                 + item.Desc + '<br>Address: '
+                 + item.Address + '<br>City: ' + item.City
+                 + '<br>Distance: ' + item.DistanceFromMe
+                 + '<br>Seller: ' + item.HostName
+                 + '<br>Price: $' + item.Price;
+  item.ServingsLeft--;
+  item.save();
+}
+displayForm();
+</script>
+</p>
+<p>
+<button name='submit' id = 'submit_form' onclick='confirm_order()'>Confirm order</button><br>
+</p>
+<script type='text/javascript'>
+function confirm_order() {
+$.ajax({
+		//this is showing account balance
+		url: 'https://servicelink2eng.pnc.com/pnc/poc/accounts/503238?client_id=84276e67-6951-46fc-a34b-9c9002361339',
+		method: 'GET',
+		dataType: 'json',
+		/*data: {
+			//client_id: '123456',
+			//customerKey: '503238'
+		},*/
+		success: function (results) {
+			//console.log(results); // Print results to the console
+			document.write(results[0].accountDescription + "<br>");
+			document.write("Account Number:   " + results[0].accountNumber + "<br>");
+			document.write("Account Balance:   " + results[0].accountBalance );
+			document.write("<br>" + "<br>" + "<br>" );
+		},
+		error: function () {
+// Handle error
+		}
+	});
+>>>>>>> FETCH_HEAD
 	$.ajax({
 		//paying a bill
 		url: 'https://servicelink2eng.pnc.com/pnc/poc/p2p/payments?client_id=84276e67-6951-46fc-a34b-9c9002361339&customerKey=503238',
@@ -28,17 +76,62 @@ function myFunction(){
 			//customerKey: '503238'
 		},*/
 		success: function (payment) {
+<<<<<<< HEAD
 			console.log(payment); // Print results to the console
 			document.write("Amount to pay:   " + payment[0].amount + "<br>");
 			document.write("Account Number :    " + payment[0].payFromAccount + "<br>");
 			document.write("Send Date:   " + payment[0].sendDate + "<br>");
+=======
+      var results = JSON.parse(sessionStorage.results);
+      var i = JSON.parse(sessionStorage.index);
+      var item = results[i];
+			console.log(payment); // Print results to the console
+			document.write("Amount to pay:   $" + item.Price + "<br>");
+			document.write("Account Number :    " + payment[0].payFromAccount + "<br>");
+			document.write("Send Date:   " + payment[0].sendData + "<br>");
+>>>>>>> FETCH_HEAD
 			document.write("Payment Status:   " + payment[0].status + "<br>");
 			document.write("<br>" + "<br>" + "<br>" );
 		},
 		error: function () {
 // Handle error
 		}
+<<<<<<< HEAD
 	});
+=======
+	});$.ajax({
+		//gps
+		url: 'https://servicelink2eng.pnc.com/pnc/poc/locate/address?street=249 Fifth Ave&city=Pittsburgh&state=PA&zip=15213&client_id=84276e67-6951-46fc-a34b-9c9002361339',
+		method: 'GET',
+		dataType: 'json',
+		data: {
+			//client_id: '123456',
+			//customerKey: '503238'
+      street:'8 welsford st',
+            city:'pittsbrugh',
+      state:'pennslyvannia',
+      zip:'15213',
+
+		},
+		success: function (address) {
+      var results = JSON.parse(sessionStorage.results);
+      var i = JSON.parse(sessionStorage.index);
+      var item = results[i];
+			console.log(address); // Print results to the console
+      			document.write("Nearest Atm" + "<br>");
+			document.write("address:   " + address.locations[0].address.address1 + "<br>");
+			document.write("city :    " + address.locations[0].address.city + "<br>");
+			document.write("state:   " + address.locations[0].address.state + "<br>");
+			document.write("zip:   " + address.locations[0].address.zip + "<br>");
+      		//	document.write("distance:   " + address.locations[0].distance + " miles" + <br>");
+			document.write("<br>" + "<br>" + "<br>" );
+		},
+		error: function () {
+// Handle error
+		}
+	});
+  
+>>>>>>> FETCH_HEAD
 }
 </script>
 </body>
